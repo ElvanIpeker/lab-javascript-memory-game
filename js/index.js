@@ -24,7 +24,6 @@ const cards = [
   { name: 'the avengers', img: 'the-avengers.jpg' },
   { name: 'thor', img: 'thor.jpg' }
 ];
-
 const memoryGame = new MemoryGame(cards);
 
 window.addEventListener('load', (event) => {
@@ -44,7 +43,30 @@ window.addEventListener('load', (event) => {
   // Bind the click event of each element to a function
   document.querySelectorAll('.card').forEach((card) => {
     card.addEventListener('click', () => {
+      let isCardPicked = memoryGame.pickedCards.some(c => c == card)
+      console.log(isCardPicked)
+      if(isCardPicked) {
+        card.classList.toggle('turned');
+        card.classList.toggle('front');
+        memoryGame.pickedCards = memoryGame.pickedCards.filter(c => c != card)
+      
+      } else {
+  
+        card.classList.toggle('turned');
+        setTimeout(() => {
+          let isPickedCardHasPairOpen = memoryGame.pickedCards.some(card2 => memoryGame.checkIfPair(card2, card))
+          if(!isPickedCardHasPairOpen) {
+            card.classList.toggle('turned');
+            card.classList.toggle('back');
+          }
+
+        }, 3000)
+        memoryGame.pickedCards.push(card)
+
+      }
       // TODO: write some code here
+      
+
       console.log(`Card clicked: ${card}`);
     });
   });
